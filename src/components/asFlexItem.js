@@ -8,10 +8,18 @@ import FlexItem from './FlexItem.js';
 function asFlexItem() {
     return (ComposedComponent) => class extends Component {
 
+        static propTypes = {
+            children: PropTypes.node,
+        };
+
+        static defaultProps = {
+            children: null,
+        };
+
         render() {
-            const { order, flexGrow, flexShrink, flexBasis, ...others } = this.props;
+            const { order, flexGrow, flexShrink, flexBasis, flexItemClass, ...others } = this.props;
             return (
-                <FlexItem order={order} flexGrow={flexGrow} flexShrink={flexShrink} flexBasis={flexBasis}>
+                <FlexItem order={order} flexGrow={flexGrow} flexShrink={flexShrink} flexBasis={flexBasis} flexItemClass={flexItemClass}>
                     <ComposedComponent {...others}>
                         {this.props.children}
                     </ComposedComponent>

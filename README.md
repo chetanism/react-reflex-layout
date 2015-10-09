@@ -26,16 +26,16 @@ class MyComponent extends Component {
                     <MyComponentHeader />
                 </FlexItem>
                 
+                <Spacer flexBasis="5px" flexGrow={0} flexItemClass="has-black-background"/>
+                
                 <FlexItem flexItemClass="MyComponent-Content">
                     <FlexBox flexDirection="row">
-                    
                         <MySideBarAsFlexItem flexBasis="20%" flexGrow={0} />
                                 
                         <FlexItem>
                             <MyMainContent />
                         </FlexItem>
-                        
-                    </FlexRow>
+                    </FlexBox>
                 </FlexItem>
                 
                 <FlexItem flexItemClass="MyComponent-Footer">
@@ -55,7 +55,7 @@ class MyComponent extends Component {
 5. Spacer - an empty flex item
 
 ### Available decorators
-1. asFlexItem - Wraps passed component in a flex item.
+1. asFlexItem - Wraps passed component in a FlexItem.
 
 
 Refer code to see available properties for each component.
