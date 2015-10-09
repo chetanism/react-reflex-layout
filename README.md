@@ -1,6 +1,9 @@
 # React Reflex Layout
 A simple implementation for flexbox components.
 
+### Installation
+npm i react-reflex-layout [--save]
+
 ### Example
 
 ```js
@@ -56,6 +59,12 @@ class MyComponent extends Component {
 
 
 Refer code to see available properties for each component.
+
+
+### Scripts
+1. lint - npm run lint
+2. test - npm test
+3. build - npm run build
 
 
 ##### Warning
