@@ -33,7 +33,7 @@ class FlexBox extends Component {
         alignItems: 'stretch',
         alignContent: 'space-around',
 
-        fillHeight: true,
+        fillHeight: false,
     };
 
     state = {
