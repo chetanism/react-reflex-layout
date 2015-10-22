@@ -3,21 +3,25 @@
  */
 
 import React, { PropTypes, Component } from 'react';
-
 import classNames from 'classNames';
 
+import DetectElementResize from 'detect-element-resize';
+
 class FlexBox extends Component {
+
     static propTypes = {
         children: PropTypes.node.isRequired,
 
         inline: PropTypes.bool,
         flexBoxClass: PropTypes.string,
 
-        flexDirection: PropTypes.oneOf(['row', 'row-reverse', 'column', 'column-reverse']).isRequired,
+        flexDirection: PropTypes.oneOf(['row', 'row-reverse', 'column', 'column-reverse']),
         flexWrap: PropTypes.oneOf(['wrap', 'nowrap', 'wrap-reverse']),
         justifyContent: PropTypes.oneOf(['flex-start', 'flex-end', 'center', 'space-between', 'space-around']),
         alignItems: PropTypes.oneOf(['flex-start', 'flex-end', 'center', 'baseline', 'stretch']),
         alignContent: PropTypes.oneOf(['flex-start', 'flex-end', 'center', 'space-between', 'space-around', 'stretch']),
+
+        fillHeight: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -29,7 +33,61 @@ class FlexBox extends Component {
         alignItems: 'stretch',
         alignContent: 'space-around',
 
+        fillHeight: true,
     };
+
+    state = {
+        height: 'auto',
+    };
+
+    componentDidMount() {
+        this.attachParentResizeListener();
+    }
+
+    componentWillReceiveProps() {
+        this.attachParentResizeListener();
+    }
+
+    removeParentResizeListener() {
+        this.attachParentResizeListener();
+    }
+
+    parentResized() {
+        const flexBox = this.refs.flexBox;
+        const parent = flexBox.parentNode;
+        const parentHeight = parent.clientHeight;
+        this.setState({
+            height: parentHeight + 'px' || 'auto',
+        });
+    }
+
+    attachParentResizeListener() {
+        const parent = this.refs.flexBox.parentNode;
+        if (
+            !this.parentResizeEventAttached &&
+            this.props.fillHeight &&
+            (
+                this.props.flexDirection === 'column' ||
+                this.props.flexDirection === 'rev-column'
+            )
+        ) {
+            DetectElementResize.addResizeListener(parent, this.parentResized.bind(this));
+            this.parentResizeEventAttached = true;
+        }
+    }
+
+    removeParentResizeListener() {
+        const parent = this.refs.flexBox.parentNode;
+        if (this.parentResizeEventAttached) {
+            DetectElementResize.removeResizeListener(parent, this.parentResized);
+            this.parentResizeEventAttached = false;
+            this.setState({
+                height: 'auto',
+            });
+        }
+    }
+
+    parentResizeEventAttached = false;
 
     buildStyle() {
         const style = {
@@ -38,6 +96,8 @@ class FlexBox extends Component {
             justifyContent: this.props.justifyContent,
             alignItems: this.props.alignItems,
             alignContent: this.props.alignContent,
+
+            height: this.state.height,
         };
 
         const { inline } = this.props;
@@ -54,7 +114,7 @@ class FlexBox extends Component {
     render() {
         const style = this.buildStyle();
         return (
-            <div
+            <div ref={'flexBox'}
                 className={ classNames('FlexBox', this.props.flexBoxClass) }
                 style={style}>
                 {this.props.children}

@@ -69,9 +69,9 @@ class FlexItem extends Component {
                 } else {
                     val = `${intVal}px`;
                 }
-            }
 
-            style.flexBasis = val;
+                style.flexBasis = val;
+            }
         }
 
         return style;
