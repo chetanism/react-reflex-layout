@@ -41,15 +41,15 @@ class FlexBox extends Component {
     };
 
     componentDidMount() {
-        this.attachParentResizeListener();
+        this.updateParentResizeListener();
     }
 
     componentWillReceiveProps() {
-        this.attachParentResizeListener();
+        this.updateParentResizeListener();
     }
 
-    removeParentResizeListener() {
-        this.attachParentResizeListener();
+    componentWillUnmount() {
+        this.removeParentResizeListener();
     }
 
     parentResized() {
@@ -63,16 +63,23 @@ class FlexBox extends Component {
 
     attachParentResizeListener() {
         const parent = this.refs.flexBox.parentNode;
+        if (!this.parentResizeEventAttached) {
+            DetectElementResize.addResizeListener(parent, this.parentResized.bind(this));
+            this.parentResizeEventAttached = true;
+        }
+    }
+
+    updateParentResizeListener() {
         if (
-            !this.parentResizeEventAttached &&
             this.props.fillHeight &&
             (
                 this.props.flexDirection === 'column' ||
                 this.props.flexDirection === 'rev-column'
             )
         ) {
-            DetectElementResize.addResizeListener(parent, this.parentResized.bind(this));
-            this.parentResizeEventAttached = true;
+            this.attachParentResizeListener();
+        } else {
+            this.removeParentResizeListener();
         }
     }
 
