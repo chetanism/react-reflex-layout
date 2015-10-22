@@ -3,7 +3,7 @@
   "description": "A simple implementation flexbox layout components.",
   "repository": "https://github.com/chetanism/react-reflex-layout",
   "license": "LGPL-3.0",
-  "version": "0.0.15",
+  "version": "0.0.16",
   "main": "./lib/Layout.js",
   "engines": {
     "node": ">=4.1 <5",
